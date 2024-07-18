@@ -48,19 +48,53 @@ int main(void)
     HC_SR04_2();
     HC_SR04_3();
 
-    if(rxData[0] == 'a' || rxData[0] == 'b'){
-      dutyValue = rxData[0];
-      switch (dutyValue) {
-        case 'a':
-          AUTO(distance_L, distance_R, distance_F);
+    if(rxData[0] == 'a' || rxData[0] == 'b' || rxData[0] == 'c' || rxData[0] == 'd' || rxData[0] == 'e' || rxData[0] == 'f' || rxData[0] == 'g'){
+	    dutyValue = rxData[0];
+	 	switch (dutyValue) {
+	 	    case 'a':	// GO!
+	 	  	    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, 1);
+	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 0);
+	 	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, 1);
+	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 0);
+	 	  		TIM3->CCR1 = 700;
+	 	  		TIM2->CCR1 = 700;
+	 	  		break;
+	 	  	case 'b':	//BACK..
+	 	  		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, 0);
+	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1);
+	 	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, 0);
+	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
+	 	  		TIM3->CCR1 = 700;
+	 	  		TIM2->CCR1 = 700;
           break;
-        case 'b':
-          TIM3->CCR1 = 0;
-          TIM2->CCR1 = 0;
-          break;
-      }
+	 	  	case 'c':	//LEFT
+	 	  	  TIM3->CCR1 = 700;
+	 	  		TIM2->CCR1 = 0;
+	 	  		break;
+	 	  	case 'd':	//RIGHT
+	 	  		TIM3->CCR1 = 0;
+	 	  		TIM2->CCR1 = 700;
+	 	  		break;
+	 	  	case 'e':	//TURN
+	 	  		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, 0);
+	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, 1);
+	 	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, 1);
+	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 0);
+	 	  		TIM3->CCR1 = 700;
+	 	  		TIM2->CCR1 = 700;
+	 	  		break;
+	 	  	case 'f':	//Autonomous driving
+	 	  	  AUTO(distance_L, distance_R, distance_F);
+	 	  	  break;
+	 	  	case 'g':	//Stop
+	 	  		TIM3->CCR1 = 0;
+	 	  		TIM2->CCR1 = 0;
+	 	  		break;
+	 	  	default:
+	 	  		break;
+	 	    }
+	    }
     }
-  }
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
