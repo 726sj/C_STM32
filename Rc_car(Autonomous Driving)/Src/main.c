@@ -66,7 +66,7 @@ int main(void)
 	 	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
 	 	  		TIM3->CCR1 = 700;
 	 	  		TIM2->CCR1 = 700;
-          break;
+          			break;
 	 	  	case 'c':	//LEFT
 	 	  	  TIM3->CCR1 = 700;
 	 	  		TIM2->CCR1 = 0;
